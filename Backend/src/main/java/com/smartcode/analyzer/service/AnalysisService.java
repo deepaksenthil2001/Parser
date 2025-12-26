@@ -3,6 +3,7 @@ package com.smartcode.analyzer.service;
 import com.smartcode.analyzer.model.Metrics;
 import com.smartcode.analyzer.model.ProgramFlow;
 import com.smartcode.analyzer.util.CodeParserUtil;
+import com.smartcode.analyzer.util.PythonParserUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,11 +16,35 @@ public class AnalysisService {
 
     public AnalysisResult analyzeFile(MultipartFile file) {
         try (InputStream in = file.getInputStream()) {
+            String fileName = file.getOriginalFilename().toLowerCase();
+            Object result;
+            
+            if (fileName.endsWith(".java")) {
+                // Parse Java file (returns metrics + program flow)
+                CodeParserUtil.Result res = CodeParserUtil.parseJavaFile(in);
+                result = res;
+            } else if (fileName.endsWith(".py")) {
+                // Parse Python file (returns metrics + program flow)
+                PythonParserUtil.Result res = PythonParserUtil.parsePythonFile(in);
+                result = res;
+            } else {
+                throw new RuntimeException("Unsupported file type: " + fileName);
+            }
 
-            // Parse Java file (returns metrics + program flow)
-            CodeParserUtil.Result res = CodeParserUtil.parseJavaFile(in);
-            Metrics m = res.metrics;
-            ProgramFlow flow = res.flow;
+            Metrics m;
+            ProgramFlow flow;
+            
+            if (result instanceof CodeParserUtil.Result) {
+                CodeParserUtil.Result javaResult = (CodeParserUtil.Result) result;
+                m = javaResult.metrics;
+                flow = javaResult.flow;
+            } else if (result instanceof PythonParserUtil.Result) {
+                PythonParserUtil.Result pythonResult = (PythonParserUtil.Result) result;
+                m = pythonResult.metrics;
+                flow = pythonResult.flow;
+            } else {
+                throw new RuntimeException("Unexpected result type: " + result.getClass().getName());
+            }
 
             // ⭐ Calculate Overall Complexity (NEW LOGIC)
             int overall =
@@ -31,12 +56,12 @@ public class AnalysisService {
             m.setOverallComplexity(overall);
 
             // Build response object
-            AnalysisResult result = new AnalysisResult();
-            result.setFileName(file.getOriginalFilename());
-            result.setSummary(m);
-            result.setProgramFlow(flow);
+            AnalysisResult analysisResult = new AnalysisResult();
+            analysisResult.setFileName(file.getOriginalFilename());
+            analysisResult.setSummary(m);
+            analysisResult.setProgramFlow(flow);
 
-            return result;
+            return analysisResult;
 
         } catch (Exception e) {
             throw new RuntimeException("Failed to analyze file: " + e.getMessage(), e);

@@ -25,7 +25,7 @@ public class AnalysisController {
     }
 
     /* ---------------------------------------------------------
-       PART A — Analyze a Single Java File
+       PART A — Analyze a Single Java or Python File
     ---------------------------------------------------------- */
     @PostMapping("/analyze")
     public ResponseEntity<?> analyze(@RequestParam("file") MultipartFile file) {
@@ -42,7 +42,7 @@ public class AnalysisController {
     }
 
     /* ---------------------------------------------------------
-       PART B — Analyze ZIP containing multiple Java files
+       PART B — Analyze ZIP containing multiple Java or Python files
     ---------------------------------------------------------- */
     @PostMapping("/analyzeZip")
     public ResponseEntity<?> analyzeZip(@RequestParam("file") MultipartFile file) {
@@ -57,7 +57,7 @@ public class AnalysisController {
             List<File> extractedFiles = ZipUtil.extractZipToTemp(file.getInputStream());
 
             if (extractedFiles.isEmpty()) {
-                return ResponseEntity.badRequest().body("ZIP contains no .java files.");
+                return ResponseEntity.badRequest().body("ZIP contains no .java or .py files.");
             }
 
             // Analyze each Java file

@@ -137,6 +137,13 @@
             <artifactId>javaparser-symbol-solver-core</artifactId>
             <version>3.25.4</version>
         </dependency>
+        
+        <!-- ANTLR for Python code analysis -->
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>4.13.1</version>
+        </dependency>
 
         <!-- DevTools -->
         <dependency>

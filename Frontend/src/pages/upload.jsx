@@ -28,12 +28,24 @@ export default function UploadPage() {
       const text = await f.text();
       localStorage.setItem("uploadedFileContent", text);
       localStorage.setItem("uploadedFileName", f.name);
-      localStorage.setItem("uploadedFileType", f.type || "text/plain");
+      let fileType = f.type || "text/plain";
+      if (!f.type && f.name && f.name.endsWith('.py')) {
+        fileType = "text/x-python";
+      } else if (!f.type && f.name && f.name.endsWith('.java')) {
+        fileType = "text/x-java";
+      }
+      localStorage.setItem("uploadedFileType", fileType);
       localStorage.setItem("uploadedFilePreview", UPLOADED_FILE_PATH);
     } catch (err) {
       localStorage.setItem("uploadedFileContent", "");
       localStorage.setItem("uploadedFileName", f.name);
-      localStorage.setItem("uploadedFileType", f.type || "application/octet-stream");
+      let fileType = f.type || "application/octet-stream";
+      if (!f.type && f.name && f.name.endsWith('.py')) {
+        fileType = "text/x-python";
+      } else if (!f.type && f.name && f.name.endsWith('.java')) {
+        fileType = "text/x-java";
+      }
+      localStorage.setItem("uploadedFileType", fileType);
       localStorage.setItem("uploadedFilePreview", UPLOADED_FILE_PATH);
     }
   };
@@ -47,6 +59,12 @@ export default function UploadPage() {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     multiple: false,
+    accept: {
+      'text/plain': ['.java', '.py'],
+      'application/java': ['.java'],
+      'application/python': ['.py'],
+      'text/x-python': ['.py'],
+    },
   });
 
   const handlePreview = async () => {
@@ -76,7 +94,7 @@ export default function UploadPage() {
       history.unshift({
         id: Date.now(),
         fileName: file.name,
-        fileType: file.type || "text/plain",
+        fileType: file.type || (file.name && file.name.endsWith('.py') ? 'text/x-python' : 'text/plain'),
         fileContent: await file.text().catch(() => ""),
         filePreview: localStorage.getItem("uploadedFilePreview"),
         date: new Date().toLocaleString(),
@@ -121,7 +139,7 @@ export default function UploadPage() {
               Upload Your File
             </Typography>
             <Typography color="#9fb3d6" sx={{ mb: 3 }}>
-              Supported: PDF · Images · Code files
+              Supported: PDF · Images · Java & Python Code files
             </Typography>
 
             {/* DROPZONE FIXED */}
