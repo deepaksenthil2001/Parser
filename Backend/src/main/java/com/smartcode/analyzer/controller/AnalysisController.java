@@ -42,7 +42,7 @@ public class AnalysisController {
     }
 
     /* ---------------------------------------------------------
-       PART B — Analyze ZIP containing multiple Java files
+       PART B — Analyze ZIP containing multiple Java/PHP files
     ---------------------------------------------------------- */
     @PostMapping("/analyzeZip")
     public ResponseEntity<?> analyzeZip(@RequestParam("file") MultipartFile file) {

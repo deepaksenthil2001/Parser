@@ -47,6 +47,10 @@ export default function UploadPage() {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     multiple: false,
+    accept: {
+      'text/plain': ['.java', '.php'],
+      'application/octet-stream': ['.java', '.php']
+    }
   });
 
   const handlePreview = async () => {
@@ -121,7 +125,7 @@ export default function UploadPage() {
               Upload Your File
             </Typography>
             <Typography color="#9fb3d6" sx={{ mb: 3 }}>
-              Supported: PDF · Images · Code files
+              Supported: PDF · Images · Java · PHP Code files
             </Typography>
 
             {/* DROPZONE FIXED */}
@@ -156,7 +160,7 @@ export default function UploadPage() {
                   <Typography fontWeight={700} sx={{ color: "#eaf6ff" }}>
                     Drag & drop to upload
                   </Typography>
-                  <Typography color="#9fb3d6">or click to browse</Typography>
+                  <Typography color="#9fb3d6">or click to browse (Java/PHP files)</Typography>
                 </>
               )}
             </Box>

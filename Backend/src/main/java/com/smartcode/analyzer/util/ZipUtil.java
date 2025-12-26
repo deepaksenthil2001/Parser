@@ -12,7 +12,7 @@ import java.util.zip.ZipInputStream;
 
 public class ZipUtil {
 
-    // Extract ZIP → Temp Folder → Return list of Java Files
+    // Extract ZIP → Temp Folder → Return list of Java and PHP Files
     public static List<File> extractZipToTemp(InputStream zipStream) throws Exception {
 
         File tempDir = Files.createTempDirectory("smartcode_zip").toFile();
@@ -23,7 +23,7 @@ public class ZipUtil {
 
         while ((entry = zis.getNextEntry()) != null) {
 
-            if (!entry.getName().endsWith(".java")) continue;
+            if (!entry.getName().endsWith(".java") && !entry.getName().endsWith(".php")) continue;
 
             File outFile = new File(tempDir, entry.getName());
             outFile.getParentFile().mkdirs();
