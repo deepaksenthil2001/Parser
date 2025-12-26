@@ -1,17 +1,20 @@
 pipeline {
     agent any
 
-    tools {
-        jdk 'JDK21'
-        nodejs 'Node18'
-    }
-
     stages {
 
         stage('Checkout') {
             steps {
                 git branch: 'main',
                     url: 'https://github.com/deepaksenthil2001/Parser.git'
+            }
+        }
+
+        stage('Check Versions') {
+            steps {
+                bat 'java -version'
+                bat 'node -v'
+                bat 'npm -v'
             }
         }
 
