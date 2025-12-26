@@ -46,18 +46,19 @@ export default function AnalyzePage() {
 
   const baseGradients = useMemo(
     () => [
-      "linear-gradient(135deg, #ff007a, #ff8a00, #ffeb3b)",
-      "linear-gradient(135deg, #8e2de2, #4a00e0, #00e5ff)",
-      "linear-gradient(135deg, #0277bd, #00bfa5, #76ff03)",
-      "linear-gradient(135deg, #ff6d00, #e91e63, #ff4081)",
-      "linear-gradient(135deg, #3f51b5, #5e35b1, #7b1fa2)",
-      "linear-gradient(135deg, #00e5ff, #2979ff, #0011aa)",
-      "linear-gradient(135deg, #aeea00, #76ff03, #00bfa5)",
-      "linear-gradient(135deg, #ff4081, #7c4dff, #2979ff)",
-      "linear-gradient(135deg, #fff176, #ffb74d, #ff8a65)"
+      "linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb)",
+      "linear-gradient(135deg, #a18cd1, #fbc2eb, #fad0c4)",
+      "linear-gradient(135deg, #84fab0, #8fd3f4, #a1c4fd)",
+      "linear-gradient(135deg, #fccb90, #d57eeb, #a18cd1)",
+      "linear-gradient(135deg, #f093fb, #f5576c, #ff9a9e)",
+      "linear-gradient(135deg, #43e97b, #38f9d7, #2af598)",
+      "linear-gradient(135deg, #667eea, #764ba2, #b06ab3)",
+      "linear-gradient(135deg, #30cfd0, #330867, #5f2c82)",
+      "linear-gradient(135deg, #fdfbfb, #ebedee, #d7dde8)"
     ],
     []
   );
+
 
   useEffect(() => {
     const raw = localStorage.getItem("analysisResult");
