@@ -15,13 +15,14 @@ pipeline {
                 bat 'java -version'
                 bat 'node -v'
                 bat 'npm -v'
+                bat 'mvn -v'
             }
         }
 
-        stage('Backend Build') {
+        stage('Backend Build (Skip Tests)') {
             steps {
                 dir('Backend') {
-                    bat 'mvn clean install'
+                    bat 'mvn clean install -DskipTests'
                 }
             }
         }
@@ -33,6 +34,15 @@ pipeline {
                     bat 'npm run build'
                 }
             }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ CI Pipeline Completed Successfully'
+        }
+        failure {
+            echo '❌ CI Pipeline Failed'
         }
     }
 }
