@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        jdk 'JDK17'
+        jdk 'JDK21'
         nodejs 'Node18'
     }
 
@@ -30,15 +30,6 @@ pipeline {
                     bat 'npm run build'
                 }
             }
-        }
-    }
-
-    post {
-        success {
-            echo '✅ Build Successful'
-        }
-        failure {
-            echo '❌ Build Failed'
         }
     }
 }
